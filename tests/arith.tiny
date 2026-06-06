@@ -1,0 +1,8 @@
+int main() {
+    print_int(2 + 3 * 4);     // 14 (优先级:3*4=12, +2)
+    print_int(20 / 3);        // 6
+    print_int(20 % 3);        // 2
+    print_int((2 + 3) * 4);   // 20 (括号)
+    print_int(2 * 3 + 4 * 5); // 26
+    return 0;
+}

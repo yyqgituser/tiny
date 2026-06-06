@@ -1,0 +1,6 @@
+int main() {
+    int x = 5;
+    int y = x + 0;
+    print_int(y);
+    return 0;
+}

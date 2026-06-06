@@ -1,0 +1,15 @@
+int f(int n) {
+    int a = 1;
+    if (n < 5) { int x = 10; a = a + x; }
+    if (n < 5) { int x = 20; a = a + x; }
+    return a;
+}
+int main() {
+    int sum = 0;
+    int i = 5;
+    sum = sum + i;
+    sum = sum + 3;
+    print_int(sum);
+    print_int(f(3));
+    return 0;
+}

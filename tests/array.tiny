@@ -1,0 +1,16 @@
+int main() {
+    int[] a = new int[5];
+    int i = 0;
+    while (i < 5) {
+        a[i] = i + 1;
+        i = i + 1;
+    }
+    int sum = 0;
+    i = 0;
+    while (i < 5) {
+        sum = sum + a[i];
+        i = i + 1;
+    }
+    print_int(sum);
+    return 0;
+}
