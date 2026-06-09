@@ -10,7 +10,7 @@ TinySyntaxNodeVisitor::TinySyntaxNodeVisitor() {
 TinySyntaxNodeVisitor::~TinySyntaxNodeVisitor() {
 }
 
-void (TinySyntaxNodeVisitor::*TinySyntaxNodeVisitor::VISIT_HANDLERS[60])(std::shared_ptr<TinyNonterminalNode> node) ={
+void (TinySyntaxNodeVisitor::*TinySyntaxNodeVisitor::VISIT_HANDLERS[65])(std::shared_ptr<TinyNonterminalNode> node) ={
   &TinySyntaxNodeVisitor::visitProgram1,
   &TinySyntaxNodeVisitor::visitProgram2,
   &TinySyntaxNodeVisitor::visitFunctionDefinition1,
@@ -46,6 +46,10 @@ void (TinySyntaxNodeVisitor::*TinySyntaxNodeVisitor::VISIT_HANDLERS[60])(std::sh
   &TinySyntaxNodeVisitor::visitLValue1,
   &TinySyntaxNodeVisitor::visitLValue2,
   &TinySyntaxNodeVisitor::visitExpression1,
+  &TinySyntaxNodeVisitor::visitLogicalOrExpression1,
+  &TinySyntaxNodeVisitor::visitLogicalOrExpression2,
+  &TinySyntaxNodeVisitor::visitLogicalAndExpression1,
+  &TinySyntaxNodeVisitor::visitLogicalAndExpression2,
   &TinySyntaxNodeVisitor::visitEqualityExpression1,
   &TinySyntaxNodeVisitor::visitEqualityExpression2,
   &TinySyntaxNodeVisitor::visitEqualityExpression3,
@@ -67,6 +71,7 @@ void (TinySyntaxNodeVisitor::*TinySyntaxNodeVisitor::VISIT_HANDLERS[60])(std::sh
   &TinySyntaxNodeVisitor::visitPrimaryExpression4,
   &TinySyntaxNodeVisitor::visitPrimaryExpression5,
   &TinySyntaxNodeVisitor::visitPrimaryExpression6,
+  &TinySyntaxNodeVisitor::visitPrimaryExpression7,
   &TinySyntaxNodeVisitor::visitCallExpression1,
   &TinySyntaxNodeVisitor::visitCallExpression2,
   &TinySyntaxNodeVisitor::visitArgumentList1,
@@ -185,6 +190,18 @@ void TinySyntaxNodeVisitor::visitLValue2(std::shared_ptr<TinyNonterminalNode> no
 void TinySyntaxNodeVisitor::visitExpression1(std::shared_ptr<TinyNonterminalNode> node) {
 }
 
+void TinySyntaxNodeVisitor::visitLogicalOrExpression1(std::shared_ptr<TinyNonterminalNode> node) {
+}
+
+void TinySyntaxNodeVisitor::visitLogicalOrExpression2(std::shared_ptr<TinyNonterminalNode> node) {
+}
+
+void TinySyntaxNodeVisitor::visitLogicalAndExpression1(std::shared_ptr<TinyNonterminalNode> node) {
+}
+
+void TinySyntaxNodeVisitor::visitLogicalAndExpression2(std::shared_ptr<TinyNonterminalNode> node) {
+}
+
 void TinySyntaxNodeVisitor::visitEqualityExpression1(std::shared_ptr<TinyNonterminalNode> node) {
 }
 
@@ -246,6 +263,9 @@ void TinySyntaxNodeVisitor::visitPrimaryExpression5(std::shared_ptr<TinyNontermi
 }
 
 void TinySyntaxNodeVisitor::visitPrimaryExpression6(std::shared_ptr<TinyNonterminalNode> node) {
+}
+
+void TinySyntaxNodeVisitor::visitPrimaryExpression7(std::shared_ptr<TinyNonterminalNode> node) {
 }
 
 void TinySyntaxNodeVisitor::visitCallExpression1(std::shared_ptr<TinyNonterminalNode> node) {

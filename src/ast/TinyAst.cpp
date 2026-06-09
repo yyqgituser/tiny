@@ -11,6 +11,7 @@ void BinaryExpr::accept(std::shared_ptr<TinyAstVisitor> v) { v->visitBinaryExpr(
 void CallExpr::accept(std::shared_ptr<TinyAstVisitor> v) { v->visitCallExpr(shared_from_this()); }
 void NewArray::accept(std::shared_ptr<TinyAstVisitor> v) { v->visitNewArray(shared_from_this()); }
 void ArrayIndex::accept(std::shared_ptr<TinyAstVisitor> v) { v->visitArrayIndex(shared_from_this()); }
+void NotExpr::accept(std::shared_ptr<TinyAstVisitor> v) { v->visitNotExpr(shared_from_this()); }
 
 void Block::accept(std::shared_ptr<TinyAstVisitor> v) { v->visitBlock(shared_from_this()); }
 void IfStmt::accept(std::shared_ptr<TinyAstVisitor> v) { v->visitIfStmt(shared_from_this()); }

@@ -202,13 +202,61 @@ void CodeGen::visitVarRef(shared_ptr<VarRef> node) {
 }
 
 void CodeGen::visitBinaryExpr(shared_ptr<BinaryExpr> node) {
+    // AND/OR need short-circuit evaluation (conditional branches),
+    // not the usual "eval both sides then combine" pattern.
+    if (node->op == BinaryExpr::AND) {
+        Function* fn = currentFunction;
+        BasicBlock* rhsBB = BasicBlock::Create(context, "and.rhs", fn);
+        BasicBlock* mergeBB = BasicBlock::Create(context, "and.merge", fn);
+
+        node->left->accept(shared_from_this());
+        Value* lhs = toBool(value); value = nullptr;
+        BasicBlock* lhsBB = builder->GetInsertBlock();
+        builder->CreateCondBr(lhs, rhsBB, mergeBB);
+
+        builder->SetInsertPoint(rhsBB);
+        node->right->accept(shared_from_this());
+        Value* rhs = toBool(value); value = nullptr;
+        BasicBlock* rhsEndBB = builder->GetInsertBlock();
+        builder->CreateBr(mergeBB);
+
+        builder->SetInsertPoint(mergeBB);
+        PHINode* phi = builder->CreatePHI(llvm::Type::getInt1Ty(context), 2);
+        phi->addIncoming(ConstantInt::getFalse(context), lhsBB);
+        phi->addIncoming(rhs, rhsEndBB);
+        value = phi;
+        return;
+    }
+    if (node->op == BinaryExpr::OR) {
+        Function* fn = currentFunction;
+        BasicBlock* rhsBB = BasicBlock::Create(context, "or.rhs", fn);
+        BasicBlock* mergeBB = BasicBlock::Create(context, "or.merge", fn);
+
+        node->left->accept(shared_from_this());
+        Value* lhs = toBool(value); value = nullptr;
+        BasicBlock* lhsBB = builder->GetInsertBlock();
+        builder->CreateCondBr(lhs, mergeBB, rhsBB);
+
+        builder->SetInsertPoint(rhsBB);
+        node->right->accept(shared_from_this());
+        Value* rhs = toBool(value); value = nullptr;
+        BasicBlock* rhsEndBB = builder->GetInsertBlock();
+        builder->CreateBr(mergeBB);
+
+        builder->SetInsertPoint(mergeBB);
+        PHINode* phi = builder->CreatePHI(llvm::Type::getInt1Ty(context), 2);
+        phi->addIncoming(ConstantInt::getTrue(context), lhsBB);
+        phi->addIncoming(rhs, rhsEndBB);
+        value = phi;
+        return;
+    }
+
     node->left->accept(shared_from_this());
     Value* l = value;
     value = nullptr;
     node->right->accept(shared_from_this());
     Value* r = value;
     value = nullptr;
-
     switch (node->op) {
         case BinaryExpr::LT:    value = builder->CreateICmpSLT(l, r); break;
         case BinaryExpr::GT:    value = builder->CreateICmpSGT(l, r); break;
@@ -293,6 +341,17 @@ void CodeGen::visitArrayIndex(shared_ptr<ArrayIndex> node) {
     llvm::Type* i32 = llvm::Type::getInt32Ty(context);
     Value* elemPtr = builder->CreateGEP(i32, arrPtr, {idx});
     value = builder->CreateLoad(i32, elemPtr);
+}
+
+void CodeGen::visitNotExpr(shared_ptr<NotExpr> node) {
+    node->operand->accept(shared_from_this());
+    Value* b = toBool(value); value = nullptr;
+    value = builder->CreateXor(b, ConstantInt::getTrue(context));
+}
+
+Value* CodeGen::toBool(Value* v) {
+    if (v->getType()->isIntegerTy(1)) return v;
+    return builder->CreateICmpNE(v, ConstantInt::get(v->getType(), 0));
 }
 
 }

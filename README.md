@@ -53,7 +53,8 @@ source.tiny
 ### Operators
 
 - Arithmetic: `+` `-` `*` `/` `%` (correct precedence, parentheses)
-- Comparison: `<` `>` `<=` `>=` `==` `!=`
+- Comparison: `<` `>` `<=` `>=` `==` `!=` 
+- Logical: `&&` `||` `!` (short-circuit evaluation)
 
 ### Arrays
 

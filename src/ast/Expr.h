@@ -33,7 +33,7 @@ public:
 
 class BinaryExpr : public Expr, public std::enable_shared_from_this<BinaryExpr> {
 public:
-    enum Op { LT, GT, LE, GE, EQ_EQ, NE, ADD, SUB, MUL, DIV, MOD };
+    enum Op { LT, GT, LE, GE, EQ_EQ, NE, ADD, SUB, MUL, DIV, MOD, AND, OR };
     Op op;
     std::shared_ptr<Expr> left;
     std::shared_ptr<Expr> right;
@@ -69,6 +69,13 @@ public:
     int slotIndex = -1;   // sema: array variable's slot
     ArrayIndex(const std::string& arrayName, std::shared_ptr<Expr> index)
         : arrayName(arrayName), index(index) {}
+    void accept(std::shared_ptr<TinyAstVisitor> visitor) override;
+};
+
+class NotExpr : public Expr, public std::enable_shared_from_this<NotExpr> {
+public:
+    std::shared_ptr<Expr> operand;
+    NotExpr(std::shared_ptr<Expr> operand) : operand(operand) {}
     void accept(std::shared_ptr<TinyAstVisitor> visitor) override;
 };
 

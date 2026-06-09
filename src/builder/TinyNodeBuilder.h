@@ -64,6 +64,10 @@ public:
     void visitLValue1(std::shared_ptr<tiny::TinyNonterminalNode> node) override;
     void visitLValue2(std::shared_ptr<tiny::TinyNonterminalNode> node) override;
     void visitExpression1(std::shared_ptr<tiny::TinyNonterminalNode> node) override;
+    void visitLogicalOrExpression1(std::shared_ptr<tiny::TinyNonterminalNode> node) override;
+    void visitLogicalOrExpression2(std::shared_ptr<tiny::TinyNonterminalNode> node) override;
+    void visitLogicalAndExpression1(std::shared_ptr<tiny::TinyNonterminalNode> node) override;
+    void visitLogicalAndExpression2(std::shared_ptr<tiny::TinyNonterminalNode> node) override;
     void visitEqualityExpression1(std::shared_ptr<tiny::TinyNonterminalNode> node) override;
     void visitEqualityExpression2(std::shared_ptr<tiny::TinyNonterminalNode> node) override;
     void visitEqualityExpression3(std::shared_ptr<tiny::TinyNonterminalNode> node) override;
@@ -85,6 +89,7 @@ public:
     void visitPrimaryExpression4(std::shared_ptr<tiny::TinyNonterminalNode> node) override;
     void visitPrimaryExpression5(std::shared_ptr<tiny::TinyNonterminalNode> node) override;
     void visitPrimaryExpression6(std::shared_ptr<tiny::TinyNonterminalNode> node) override;
+    void visitPrimaryExpression7(std::shared_ptr<tiny::TinyNonterminalNode> node) override;
     void visitCallExpression1(std::shared_ptr<tiny::TinyNonterminalNode> node) override;
     void visitCallExpression2(std::shared_ptr<tiny::TinyNonterminalNode> node) override;
     void visitArgumentList1(std::shared_ptr<tiny::TinyNonterminalNode> node) override;

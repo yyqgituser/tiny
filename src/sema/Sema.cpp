@@ -194,4 +194,12 @@ void Sema::visitArrayIndex(shared_ptr<ArrayIndex> node) {
     node->exprType = Type{Type::INT};
 }
 
+void Sema::visitNotExpr(shared_ptr<NotExpr> node) {
+    node->operand->accept(shared_from_this());
+    if (node->operand->exprType.kind != Type::INT) {
+        throw runtime_error("sema: '!' requires int operand");
+    }
+    node->exprType = Type{Type::INT};
+}
+
 }

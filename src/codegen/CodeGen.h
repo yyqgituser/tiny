@@ -45,6 +45,7 @@ public:
     void visitAssignStmt(std::shared_ptr<ast::AssignStmt> node) override;
     void visitNewArray(std::shared_ptr<ast::NewArray> node) override;
     void visitArrayIndex(std::shared_ptr<ast::ArrayIndex> node) override;
+    void visitNotExpr(std::shared_ptr<ast::NotExpr> node) override;
 
 private:
     TargetContext& targetContext;
@@ -67,6 +68,7 @@ private:
     void declareFunctions(std::shared_ptr<ast::Program> program);
     llvm::GlobalVariable* getOrCreateNativeSlot(const std::string& name);
     bool currentBlockTerminated();
+    llvm::Value* toBool(llvm::Value* v);
 };
 
 }

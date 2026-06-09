@@ -39,6 +39,7 @@ public:
     void visitAssignStmt(std::shared_ptr<ast::AssignStmt> node) override;
     void visitNewArray(std::shared_ptr<ast::NewArray> node) override;
     void visitArrayIndex(std::shared_ptr<ast::ArrayIndex> node) override;
+    void visitNotExpr(std::shared_ptr<ast::NotExpr> node) override;
 
 private:
     struct VarInfo { int slot; ast::Type type; };

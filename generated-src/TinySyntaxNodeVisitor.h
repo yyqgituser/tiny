@@ -91,6 +91,14 @@ public:
 
   virtual void visitExpression1(std::shared_ptr<TinyNonterminalNode> node);
 
+  virtual void visitLogicalOrExpression1(std::shared_ptr<TinyNonterminalNode> node);
+
+  virtual void visitLogicalOrExpression2(std::shared_ptr<TinyNonterminalNode> node);
+
+  virtual void visitLogicalAndExpression1(std::shared_ptr<TinyNonterminalNode> node);
+
+  virtual void visitLogicalAndExpression2(std::shared_ptr<TinyNonterminalNode> node);
+
   virtual void visitEqualityExpression1(std::shared_ptr<TinyNonterminalNode> node);
 
   virtual void visitEqualityExpression2(std::shared_ptr<TinyNonterminalNode> node);
@@ -132,6 +140,8 @@ public:
   virtual void visitPrimaryExpression5(std::shared_ptr<TinyNonterminalNode> node);
 
   virtual void visitPrimaryExpression6(std::shared_ptr<TinyNonterminalNode> node);
+
+  virtual void visitPrimaryExpression7(std::shared_ptr<TinyNonterminalNode> node);
 
   virtual void visitCallExpression1(std::shared_ptr<TinyNonterminalNode> node);
 

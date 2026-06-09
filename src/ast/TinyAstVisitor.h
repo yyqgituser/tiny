@@ -29,6 +29,7 @@ public:
     virtual void visitCallExpr(std::shared_ptr<CallExpr> node) {}
     virtual void visitNewArray(std::shared_ptr<NewArray> node) {}
     virtual void visitArrayIndex(std::shared_ptr<ArrayIndex> node) {}
+    virtual void visitNotExpr(std::shared_ptr<NotExpr> node) {}
 };
 
 }

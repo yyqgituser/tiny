@@ -40,6 +40,7 @@ A sequence of decimal digits:
 ```
 +   -   *   /   %          arithmetic
 <   >   <=  >=  ==  !=      comparison
+&&  ||  !                  logical
 =                          assignment
 ;   ,                      separators
 ( )   { }   [ ]            parentheses / braces / brackets
@@ -148,7 +149,7 @@ A declaration's initializer cannot refer to the variable being declared.
 
 ### Assignment
 
-The left-hand side is an *lvalue* — either a plain variable or an array element:
+The left-hand side is an *lvalue* â€” either a plain variable or an array element:
 
 ```
 assignment     ::=  lvalue "=" expression ";"
@@ -165,7 +166,13 @@ Expressions are layered to encode operator precedence. From lowest precedence
 (loosest binding) to highest:
 
 ```
-expression     ::=  equality
+expression     ::=  logicalOr
+
+logicalOr      ::=  logicalAnd
+                 |  logicalOr "||" logicalAnd
+
+logicalAnd     ::=  equality
+                 |  logicalAnd "&&" equality
 
 equality       ::=  relational
                  |  equality ("==" | "!=") relational
@@ -180,12 +187,16 @@ multiplicative ::=  primary
                  |  multiplicative ("*" | "/" | "%") primary
 ```
 
-All binary operators are **left-associative**. So:
+All binary operators are **left-associative**. From lowest to highest
+precedence:
 
-- `*` `/` `%` bind tighter than `+` `-`
-- `+` `-` bind tighter than the comparisons `< > <= >=`
-- `< > <= >=` bind tighter than `== !=`
-- `a - b - c` means `(a - b) - c`
+- `||`
+- `&&`
+- `== !=`
+- `< > <= >=`
+- `+ -`
+- `* / %`
+- `!` (unary prefix, binds tightest)
 
 ### Primary expressions
 
@@ -196,6 +207,7 @@ primary        ::=  INTEGER                          // 42
                  |  call                              // f(...)
                  |  "new" "int" "[" expression "]"    // allocate int array
                  |  IDENTIFIER "[" expression "]"     // array element read
+                 |  "!" primary                       // logical not
 ```
 
 ### Function calls
@@ -216,7 +228,6 @@ A call may target a user-defined function or a built-in native function (e.g.
 - Only one integer type (`int`) and a one-dimensional `int[]` array type.
 - Arrays are raw pointers: `new int[n]` allocates `n` ints, with **no length
   field and no bounds checking**.
-- Comparison results are boolean only — usable in `if` / `while` conditions,
+- Comparison results are boolean only â€” usable in `if` / `while` conditions,
   but not storable into an `int`.
-- No `break` / `continue`, no `for`, no logical `&& || !`, no bitwise operators,
-  no unary minus. (These are natural future extensions.)
+- No `break` / `continue`, no `for`, no bitwise operators, no unary minus.

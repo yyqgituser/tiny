@@ -266,7 +266,29 @@ void TinyNodeBuilder::visitLValue2(shared_ptr<TinyNonterminalNode> node) {
 
 // ---- Expression layers (pass-through unless real operator) ----
 void TinyNodeBuilder::visitExpression1(shared_ptr<TinyNonterminalNode> node) {
+    node->rhs->at(0)->accept(shared_from_this());   // LogicalOrExpression -> expr
+}
+
+// ---- LogicalOrExpression (pass-through / binary OR) ----
+void TinyNodeBuilder::visitLogicalOrExpression1(shared_ptr<TinyNonterminalNode> node) {
+    node->rhs->at(0)->accept(shared_from_this());   // LogicalAndExpression -> expr
+}
+void TinyNodeBuilder::visitLogicalOrExpression2(shared_ptr<TinyNonterminalNode> node) {
+    node->rhs->at(0)->accept(shared_from_this());   // LogicalOrExpression -> expr
+    auto left = expr;
+    node->rhs->at(2)->accept(shared_from_this());   // LogicalAndExpression -> expr
+    expr = make_shared<BinaryExpr>(BinaryExpr::OR, left, expr);
+}
+
+// ---- LogicalAndExpression (pass-through / binary AND) ----
+void TinyNodeBuilder::visitLogicalAndExpression1(shared_ptr<TinyNonterminalNode> node) {
     node->rhs->at(0)->accept(shared_from_this());   // EqualityExpression -> expr
+}
+void TinyNodeBuilder::visitLogicalAndExpression2(shared_ptr<TinyNonterminalNode> node) {
+    node->rhs->at(0)->accept(shared_from_this());   // LogicalAndExpression -> expr
+    auto left = expr;
+    node->rhs->at(2)->accept(shared_from_this());   // EqualityExpression -> expr
+    expr = make_shared<BinaryExpr>(BinaryExpr::AND, left, expr);
 }
 
 void TinyNodeBuilder::visitEqualityExpression1(shared_ptr<TinyNonterminalNode> node) {
@@ -380,6 +402,11 @@ void TinyNodeBuilder::visitPrimaryExpression6(shared_ptr<TinyNonterminalNode> no
     string name = tokenText(terminal);
     node->rhs->at(2)->accept(shared_from_this());   // Expression -> expr (index)
     expr = make_shared<ArrayIndex>(name, expr);
+}
+void TinyNodeBuilder::visitPrimaryExpression7(shared_ptr<TinyNonterminalNode> node) {
+    // BANG PrimaryExpression
+    node->rhs->at(1)->accept(shared_from_this());   // PrimaryExpression -> expr
+    expr = make_shared<NotExpr>(expr);
 }
 
 // ---- CallExpression ----
